@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: webapp   # Unique key of the ReplicaSet instance
 spec:
-  minReadySeconds: 30 # Minimum number of seconds for which a newly created pod should be ready without any of its container crashing, for it to be considered available. 
+  # minReadySeconds: 30 # Minimum number of seconds for which a newly created pod should be ready without any of its container crashing, for it to be considered available. 
   replicas: 2   # 2 Pods should exist at all times.
   selector:
     matchLabels:
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: webapp
-        image: tchatua/fleetman-webapp-angular:release0 
+        image: tchatua/fleetman-webapp-angular:v1.0
 ---
 apiVersion: apps/v1
 kind: Deployment

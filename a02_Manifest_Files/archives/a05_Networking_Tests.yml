@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mysql
+  labels:
+    app: mysql
+spec:
+  containers:
+  - name: mysql
+    image: mysql:5
+    env:
+    # I use secret in the real live
+    - name: MYSQL_ROOT_PASSWORD 
+      value: password
+    - name: MYSQL_DATABASE
+      value: fleetmandb
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: database
+spec:
+  # This define which pods are going to be represented by this service
+  # The service become a network endpoint for either services
+  # or maybe external users to connect to (e.g. browsers)
+  selector:
+    app: mysql
+  ports:
+    - name: mysql
+      port: 3306
+  type: ClusterIP
+
