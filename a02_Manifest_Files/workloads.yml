@@ -1,0 +1,106 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: queue   # Unique key of the ReplicaSet instance
+spec:
+  # minReadySeconds: 30 # Minimum number of seconds for which a newly created pod should be ready without any of its container crashing, for it to be considered available. 
+  replicas: 1   # 1 Pods should exist at all times.
+  selector:
+    matchLabels:
+      app: queue
+  template: # Template for the pods
+    metadata:
+      labels:
+        app: queue
+    spec:
+      containers:
+      - name: queue
+        image: tchatua/fleetman-queue:v1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: position-simulator   # Unique key of the ReplicaSet instance
+spec:
+  # minReadySeconds: 30 # Minimum number of seconds for which a newly created pod should be ready without any of its container crashing, for it to be considered available. 
+  replicas: 1   # 1 Pods should exist at all times.
+  selector:
+    matchLabels:
+      app: position-simulator
+  template: # Template for the pods
+    metadata:
+      labels:
+        app: position-simulator
+    spec:
+      containers:
+      - name: position-simulator
+        image: tchatua/fleetman-position-simulator:release1
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: production-microservice 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: position-tracker   # Unique key of the ReplicaSet instance
+spec:
+  # minReadySeconds: 30 # Minimum number of seconds for which a newly created pod should be ready without any of its container crashing, for it to be considered available. 
+  replicas: 1   # 1 Pods should exist at all times.
+  selector:
+    matchLabels:
+      app: position-tracker
+  template: # Template for the pods
+    metadata:
+      labels:
+        app: position-tracker
+    spec:
+      containers:
+      - name: position-tracker
+        image: tchatua/fleetman-position-tracker:release1
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: production-microservice 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway   # Unique key of the ReplicaSet instance
+spec:
+  # minReadySeconds: 30 # Minimum number of seconds for which a newly created pod should be ready without any of its container crashing, for it to be considered available. 
+  replicas: 1   # 1 Pods should exist at all times.
+  selector:
+    matchLabels:
+      app: api-gateway
+  template: # Template for the pods
+    metadata:
+      labels:
+        app: api-gateway
+    spec:
+      containers:
+      - name: api-gateway
+        image: tchatua/fleetman-api-gateway:release1
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: production-microservice 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp   # Unique key of the ReplicaSet instance
+spec:
+  # minReadySeconds: 30 # Minimum number of seconds for which a newly created pod should be ready without any of its container crashing, for it to be considered available. 
+  replicas: 1   # 1 Pods should exist at all times.
+  selector:
+    matchLabels:
+      app: webapp
+  template: # Template for the pods
+    metadata:
+      labels:
+        app: webapp
+    spec:
+      containers:
+      - name: webapp
+        image: tchatua/fleetman-webapp-angular:release1
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: production-microservice 
